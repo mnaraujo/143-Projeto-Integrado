@@ -1,0 +1,396 @@
+\documentclass[10pt]{article}
+
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc}
+
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+
+% Simpler bibsection for CV sections
+% (thanks to natbib for inspiration)
+\makeatletter
+\newlength{\bibhang}
+\setlength{\bibhang}{1em}
+\newlength{\bibsep}
+{\@listi \global\bibsep\itemsep \global\advance\bibsep by\parsep}
+\newenvironment{bibsection}
+{\minipage[t]{\linewidth}\list{}{%
+\setlength{\leftmargin}{\bibhang}%
+\setlength{\itemindent}{-\leftmargin}%
+\setlength{\itemsep}{\bibsep}%
+\setlength{\parsep}{\z@}%
+}}
+{\endlist\endminipage}
+\makeatother
+
+% Layout: Puts the section titles on left side of page
+\reversemarginpar
+
+%
+%         PAPER SIZE, PAGE NUMBER, AND DOCUMENT LAYOUT NOTES:
+%
+% The next \usepackage line changes the layout for CV style section
+% headings as marginal notes. It also sets up the paper size as either
+% letter or A4. By default, letter was used. If A4 paper is desired,
+% comment out the letterpaper lines and uncomment the a4paper lines.
+%
+% As you can see, the margin widths and section title widths can be
+% easily adjusted.
+%
+% ALSO: Notice that the includefoot option can be commented OUT in order
+% to put the PAGE NUMBER *IN* the bottom margin. This will make the
+% effective text area larger.
+%
+% IF YOU WISH TO REMOVE THE ``of LASTPAGE'' next to each page number,
+% see the note about the +LP and -LP lines below. Comment out the +LP
+% and uncomment the -LP.
+%
+% IF YOU WISH TO REMOVE PAGE NUMBERS, be sure that the includefoot line
+% is uncommented and ALSO uncomment the \pagestyle{empty} a few lines
+% below.
+%
+
+%% Use these lines for letter-sized paper
+%\usepackage[paper=letterpaper,
+%            %includefoot, % Uncomment to put page number above margin
+%            marginparwidth=1.2in,     % Length of section titles
+%            marginparsep=.05in,       % Space between titles and text
+%            margin=1in,               % 1 inch margins
+%            includemp]{geometry}
+
+%% Use these lines for A4-sized paper
+\usepackage[paper=a4paper,
+%includefoot, % Uncomment to put page number above margin
+marginparwidth=30mm,    % Length of section titles
+marginparsep=1mm,       % Space between titles and text
+margin=25mm,              % 25mm margins
+includemp]{geometry}
+
+%% More layout: Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+%% This gives us fun enumeration environments. compactitem will be nice.
+\usepackage{paralist}
+
+%% Reference the last page in the page number
+%
+% NOTE: comment the +LP line and uncomment the -LP line to have page
+%       numbers without the ``of ##'' last page reference)
+%
+% NOTE: uncomment the \pagestyle{empty} line to get rid of all page
+%       numbers (make sure includefoot is commented out above)
+%
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+%\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+{0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+\parbox{4in}{\, \hfill %
+\arabic{page} de \protect\pageref*{LastPage} % +LP
+%                    \arabic{page}                               % -LP
+\hfill \,}}
+
+% Finally, give us PDF bookmarks
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.3}
+\hypersetup{colorlinks,breaklinks,
+linkcolor=darkblue,urlcolor=darkblue,
+anchorcolor=darkblue,citecolor=darkblue}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title (name) with a horizontal rule under it
+%
+% Usage: \makeheading{name}
+%
+% Place at top of document. It should be the first thing.
+\newcommand{\makeheading}[1]%
+{\hspace*{-\marginparsep minus \marginparwidth}%
+\begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+  {\Large \bfseries #1}\\[-0.15\baselineskip]%
+  \rule{\columnwidth}{1pt}%
+\end{minipage}}
+
+% The section headings
+%
+% Usage: \section{section name}
+%
+% Follow this section IMMEDIATELY with the first line of the section
+% text. Do not put whitespace in between. That is, do this:
+%
+%       \section{My Information}
+%       Here is my information.
+%
+% and NOT this:
+%
+%       \section{My Information}
+%
+%       Here is my information.
+%
+% Otherwise the top of the section header will not line up with the top
+% of the section. Of course, using a single comment character (%) on
+% empty lines allows for the function of the first example with the
+% readability of the second example.
+\renewcommand{\section}[2]%
+{\pagebreak[2]\vspace{1.3\baselineskip}%
+\phantomsection\addcontentsline{toc}{section}{#1}%
+\hspace{0in}%
+\marginpar{
+\raggedright \scshape #1}#2}
+
+% An itemize-style list with lots of space between items
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+{\begin{itemize}[#1]}{\end{itemize}%
+    \vspace{-1em}}
+
+    \newenvironment{compactouterlist}[1][\enskip\textbullet]%
+    {\begin{itemize} \setlength{\itemsep}{0.1em}}{\end{itemize}%
+        \vspace{-1em}}
+
+        % An environment IDENTICAL to outerlist that has better pre-list spacing
+        % when used as the first thing in a \section
+        \newenvironment{lonelist}[1][\enskip\textbullet]%
+        {\vspace{-\baselineskip}\begin{list}{#1}{%
+          \setlength{\partopsep}{0pt}%
+          \setlength{\topsep}{0pt}}}
+          {\end{list}\vspace{-.6\baselineskip}}
+
+          % An itemize-style list with little space between items
+          \newenvironment{innerlist}[1][\enskip\textbullet]%
+          {\begin{compactitem}[#1]}{\end{compactitem}}
+
+            % An environment IDENTICAL to innerlist that has better pre-list spacing
+            % when used as the first thing in a \section
+            \newenvironment{loneinnerlist}[1][\enskip\textbullet]%
+            {\vspace{-\baselineskip}\begin{compactitem}[#1]}
+              {\end{compactitem}\vspace{-.6\baselineskip}}
+
+              % To add some paragraph space between lines.
+              % This also tells LaTeX to preferably break a page on one of these gaps
+              % if there is a needed pagebreak nearby.
+              \newcommand{\blankline}{\quad\pagebreak[2]}
+
+              % Uses hyperref to link DOI
+              \newcommand\doilink[1]{\href{http://dx.doi.org/#1}{#1}}
+              \newcommand\doi[1]{doi:\doilink{#1}}
+
+
+
+              %%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+              %%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+              \begin{document}
+
+              \makeheading{Mônica Nelly Faria de Araujo}
+
+              \section{Informações Para Contato}
+              %
+              % NOTE: Mind where the & separators and \\ breaks are in the following
+              %       table.
+              %
+              % ALSO: \rcollength is the width of the right column of the table
+              %       (adjust it to your liking; default is 1.85in).
+              %
+              \newlength{\rcollength}\setlength{\rcollength}{1.85in}
+
+              \begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+                \textit{Telefone:} (83) 99896-2434 & \textit{Cidade:} Angicos - RN \\
+                \textit{E-mail:} \href{mailto:monicanelly.faria@gmail.com}{monicanelly.faria@gmail.com} \\ %& \textit{Estado civil:} 
+%                \textit{Homepage:} \href{http://codestore.in/willian}{codestore.in/willian} & \textit{Nascimento:} Set/1991 \\
+                \textit{Endereço:} R. Joaquim Martins Sobrinho, 144 -
+                Centro\\
+%                \textit{Lattes:} \href{http://lattes.cnpq.br/4027613426383173}{lattes.cnpq.br/4027613426383173} \\
+                \textit{LinkedIn:} \href{https://www.linkedin.com/in/m%C3%B4nica-araujo-018763123/}{linkedin.com/in/monicaaraujo} \\
+                \end{tabular}
+
+%                \section{ï¿½reas de Atuaï¿½ï¿½o}
+%                Desenvolvimento de \textit{Softwares} e \textit{Hardwares}, Sistemas Embarcados e administraï¿½ï¿½o de servidores GNU/Linux de Alto Desempenho e Alta Disponibilidade.
+%
+%                \section{Objetivo}
+%		Analista de Suporte Linux.
+%
+                \section{Instrução}
+                \href{https://ufersa.edu.br/}{\textbf{Universidade Federal Rural do Semi-Árido}}, Angicos - RN
+                
+                \begin{outerlist}
+                	\item[] \href{https://bsiangicos.ufersa.edu.br}{Bacharelado em Sistemas de Informação}
+                	\begin{innerlist}
+                		\item Início em 2023
+                	\end{innerlist}
+                \end{outerlist}
+                
+                \blankline
+                
+                
+                \href{https://ufpa.br}{\textbf{Universidade Federal do Pará}}, Belém - PA
+
+				\begin{outerlist}
+					\item[] \href{https://www.fct.ufpa.br}{Bacharelado em Engenharia da Computação}
+					\begin{innerlist}
+						\item Início em 2009 - trancada em 2016
+					\end{innerlist}
+				\end{outerlist}
+				
+				\blankline
+                
+%                \href{https://unicarioca.edu.br}{\textbf{Centro Universitário Unicarioca}}, Rio de Janeiro - RJ
+%                
+%                \begin{outerlist}
+%                	\item[] \href{https://unicarioca.edu.br/cursos/graduacao/engenharia-da-computacao}{Bacharelado em Engenharia da Computação}
+%                	\begin{innerlist}
+%                		\item Início em 2016 - trancada em 2020
+%                	\end{innerlist}
+%                \end{outerlist}
+                
+				
+				\section{Experiências Profissionais}
+				\href{https://www.brq.com/en/home/}{\textbf{BRQ}},
+				\begin{outerlist}
+					\item[] \textit{Analista de Sistemas}
+					\hfill \textbf{Julho 2022 à Atualmente}
+					\begin{innerlist}
+						\item Desenvolvimento do sistema de seguro viagem com microsserviços, C\#, .Net Core e APIs Rest;
+						\item Desenvolvimento, migração e suporte aos sistemas de vendas de seguros de vida individual da seguradora Liberty, com rotinas automáticas com utilização do Power Center, ODM, BPM, Qualitor, Jira, integração contínua com Bamboo, versionamento com o git hub e SVN e desenvolimento àgil com Scrum;
+						\item Desenvolvimento de sistema de prevenção à lavagem de dinheiro por determinação da SUSEP utilizando WCF, API Rest e Mongo DB e Oracle;
+
+					\end{innerlist}
+				\end{outerlist}                	
+				\blankline
+				
+				\href{https://www.iblueconsulting.com.br/}{\textbf{iBlue Consulting}},
+				\begin{outerlist}
+					\item[] \textit{Analista de Desenvolvimento}
+					\hfill \textbf{Novembro 2021 à Junho 2022}
+					\begin{innerlist}
+						\item Desenvolvimento de melhorias nos sistemas de seguros de vida individual e em grupo
+						\item Desenvolvimento de serviços web com WCF e API Rest
+					\end{innerlist}
+				\end{outerlist}                	
+				\blankline
+
+				\href{http://gera.com.br}{\textbf{Gera - Unique Sales Tech}},
+				\begin{outerlist}
+					\item[] \textit{Analista de Desenvolvimento}
+					\hfill \textbf{Julho 2021 à Fevereiro 2022}
+					\begin{innerlist}
+						\item Manutenção e desenvolvimento de sistema para simplificação de estruturas comerciais B2B e B2B2C;
+						\item Criação de tópicos em filas;
+						\item Criação e manutenção de patchs, scripts, views e procedures em SQL Server.
+					\end{innerlist}
+				\end{outerlist}                	
+				\blankline
+				
+				\href{http://claro.com.br}{\textbf{Claro Brasil}},
+				\begin{outerlist}
+					\item[] \textit{Analista de Soluções}
+					\hfill \textbf{Outubro 2019 à Julho 2021}
+					\begin{innerlist}
+						\item Manutenção e desenvolvimento do sistema para o acompanhamento do desempenho da área de comercial, utilizado pela diretoria;
+						\item Desenvolvimento de APIs REST com .NET Core e Postgres;
+						\item Manutenção e desenvolvimento de aplicações web com C\# e JavaScript.
+					\end{innerlist}
+				\end{outerlist}                	
+				\blankline
+				
+                \href{http://realtask.com.br}{\textbf{RealTask Tecnologia}},
+                \begin{outerlist}
+                	\item[] \textit{Analista de Sistemas}
+                	\hfill \textbf{Fevereiro 2019 à Outubro 2019}
+                	\begin{innerlist}
+                			\item Análise e desenvolvimento de sistemas que atendam às demandas da administração e gestão de fundos de investimento em um banco multinacional;
+                			\item Manutenção e desenvolvimento de APIs REST com .NET Core e SQL Server;
+                			\item Manutenção e desenvolvimento de aplicações web com C\#, jQuery e Razor;
+                			\item Manutenção e desenvolvimento de aplicações desktop com VB Net e VB6.
+                	\end{innerlist}
+                \end{outerlist}                	
+                \blankline
+                
+				\href{http://tasken.com}{\textbf{Tasken}},
+				\begin{outerlist}
+					\item[] \textit{Desenvolvedora Web}
+					\hfill \textbf{Junho de 2018 à Fevereiro de 2019}
+					\begin{innerlist}
+						\item Manutenção e desenvolvimento de API Rest com NodeJS e MongoDB;
+						\item Manutenção e desenvolvimento de aplicações web (front-end) com Angular 1.6;
+						\item Manutenção e desenvolvimento de aplicações C\#;
+						\item Suporte, manutenção e desenvolvimento das rotinas de ETL utilizando o SSIS.
+					\end{innerlist}
+				
+					\item[] \textit{Estagiária}
+					\hfill \textbf{Novembro de 2016 à Junho de 2018}
+					\begin{innerlist}
+						\item Suporte na criação de consultas, procedures, scripts, relacionamento entre tabelas do banco, análise e tratamento de dados, desenvolvimento e análise de rotinas de entrada e saída de dados do sistema.
+					\end{innerlist}
+				
+				\end{outerlist}                	
+				\blankline
+
+    
+				\href{http://www.belem.pa.gov.br/semob/site/}{\textbf{SeMOB - Superintendência Executiva de Mobilidade Urbana de Belém}},
+				\begin{outerlist}
+					\item[] \textit{Suporte - Estagiária}
+					\hfill \textbf{Juho de 2013 até Março de 2015}
+					\begin{innerlist}
+						\item Ajustar e manter os sistemas de táxi e de emissão de taxas (Banco do Brasil);
+						\item Fornecer suporte aos clientes;
+						\item Organizar os sistemas e manter as rotinas nos serviços de táxi e mototáxi.
+					\end{innerlist}
+				\end{outerlist}                	
+				\blankline
+
+				\href{http://jambu.com.br}{\textbf{Jambu Tecnologia}},
+				\begin{outerlist}
+					\item[] \textit{Desenvolvimento Web - Estagiária}
+					\hfill \textbf{Abril de 2012 até Julho de 2013}
+					\begin{innerlist}
+						\item Desenvolver e gerenciar sites na plataforma Joomla!;
+						\item Desenvolver aplicações em PHP com banco de dadod MySQL;
+						\item Desenvolver software na plataforma Grails.
+					\end{innerlist}
+				\end{outerlist}                	
+				\blankline
+				
+				
+				\href{http://laps.ufpa.br}{\textbf{Laboratório de Processamento de Sinais - UFPA}},
+				\begin{outerlist}
+					\item[] \textit{Desenvolvimento Web - Bolsista}
+					\hfill \textbf{Fevereiro de 2011 até Abril de 2012}
+					\begin{innerlist}
+						\item Desenvolver e gerenciar sites na plataforma Joomla!;
+						\item Suporte, manutenção e gerência do conteúdo dos sites desenvolvidos dentre eles diversas homepages institucionais da UFPA.
+					\end{innerlist}
+				\end{outerlist}                	
+				\blankline
+
+                \section{Outros Conhecimentos}
+              %  \href{http://jambu.com.br}{\textbf{Jambu Tecnologia}},
+
+                \begin{outerlist}
+                \item[] \textit{Desenvolvimento em PHP}
+                %  \hfill \textbf{Fevereiro 2012 atï¿½ atualmente}
+                  \begin{innerlist}
+                  \item Desenvolvimento com utilização do framework zend;
+                  \item Desenvolvimento integrado com MySQL.
+                  \end{innerlist}
+                \end{outerlist}
+
+		\blankline
+
+                \begin{outerlist}
+                \item[] \textit{Outros Conhecimentos}
+                  \begin{innerlist}
+                  \item .NET Framework, .NET Core, ASP.NET MVC, C\#, SSIS, MSSQL Server, MMQ;
+                  \item Git, SVN, AngularJS, PL SQL, Node.js, JavaScript, HTML.
+                  \end{innerlist}
+                \end{outerlist}
+
+
+                \end{document}
+
